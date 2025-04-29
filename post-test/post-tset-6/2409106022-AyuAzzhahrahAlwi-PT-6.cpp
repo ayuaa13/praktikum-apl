@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <algorithm> 
 using namespace std;
 
 #define MAX_USER 10
@@ -36,7 +37,6 @@ void registrasi(User* users, int* jumlahUser) {
         cout << "\nKuota user sudah penuh! Tidak bisa registrasi lagi.\n";
     }
 }
-
 
 bool login(User* users, int jumlahUser, int kesempatan = 3) {
     if (kesempatan == 0) return false;
@@ -129,6 +129,72 @@ void hapusProduk(Produk* produk, int* jumlahProduk) {
     cout << "Produk berhasil dihapus!\n";
 }
 
+void sortNamaAscending(Produk* produk, int jumlahProduk) {
+    for (int i = 0; i < jumlahProduk - 1; i++) {
+        for (int j = 0; j < jumlahProduk - i - 1; j++) {
+            if (produk[j].nama > produk[j + 1].nama) {
+                swap(produk[j], produk[j + 1]);
+            }
+        }
+    }
+    cout << "Produk berhasil diurutkan berdasarkan nama (A-Z).\n";
+}
+
+void sortHargaDescending(Produk* produk, int jumlahProduk) {
+    for (int i = 0; i < jumlahProduk - 1; i++) {
+        for (int j = 0; j < jumlahProduk - i - 1; j++) {
+            if (produk[j].harga < produk[j + 1].harga) {
+                swap(produk[j], produk[j + 1]);
+            }
+        }
+    }
+    cout << "Produk berhasil diurutkan berdasarkan harga (terbesar ke terkecil).\n";
+}
+
+void bubbleSortStokAscending(Produk* produk, int jumlahProduk) {
+    for (int i = 0; i < jumlahProduk - 1; i++) {
+        for (int j = 0; j < jumlahProduk - i - 1; j++) {
+            if (produk[j].stok > produk[j + 1].stok) {
+                swap(produk[j], produk[j + 1]);
+            }
+        }
+    }
+    cout << "Produk berhasil diurutkan berdasarkan stok (terkecil ke terbesar) menggunakan Bubble Sort.\n";
+}
+
+void menuSorting(Produk* produk, int jumlahProduk) {
+    int pilihan;
+    do {
+        cout << "\n===== MENU SORTING =====\n";
+        cout << "1. Urutkan berdasarkan Nama (A-Z)\n";
+        cout << "2. Urutkan berdasarkan Harga (Terbesar-Terkecil)\n";
+        cout << "3. Urutkan berdasarkan Stok (Terkecil-Terbesar) - Bubble Sort\n";
+        cout << "4. Kembali ke Menu Utama\n";
+        cout << "Pilihan: ";
+        cin >> pilihan;
+
+        switch (pilihan) {
+            case 1:
+                sortNamaAscending(produk, jumlahProduk);
+                tampilkan(produk, jumlahProduk);
+                break;
+            case 2:
+                sortHargaDescending(produk, jumlahProduk);
+                tampilkan(produk, jumlahProduk);
+                break;
+            case 3:
+                bubbleSortStokAscending(produk, jumlahProduk);
+                tampilkan(produk, jumlahProduk);
+                break;
+            case 4:
+                cout << "Kembali ke menu utama.\n";
+                break;
+            default:
+                cout << "Pilihan tidak valid!\n";
+        }
+    } while (pilihan != 4);
+}
+
 int main() {
     int pilihan;
 
@@ -141,25 +207,40 @@ int main() {
     }
 
     do {
-        cout << "\n===== MENU =====\n";
+        cout << "\n===== MENU UTAMA =====\n";
         cout << "1. Tampilkan Produk\n";
         cout << "2. Tambah Produk\n";
         cout << "3. Ubah Produk\n";
         cout << "4. Hapus Produk\n";
-        cout << "5. Keluar\n";
+        cout << "5. Sorting Produk\n";
+        cout << "6. Keluar\n";
         cout << "Pilihan: ";
         cin >> pilihan;
 
         switch (pilihan) {
-            case 1: tampilkan(produk, jumlahProduk); break;
-            case 2: tambahProduk(produk, &jumlahProduk); break;
-            case 3: ubahProduk(produk, jumlahProduk); break;
-            case 4: hapusProduk(produk, &jumlahProduk); break;
-            case 5: cout << "Terima kasih telah menggunakan program!\n"; break;
-            default: cout << "Pilihan tidak valid!\n";
+            case 1: 
+                tampilkan(produk, jumlahProduk); 
+                break;
+            case 2: 
+                tambahProduk(produk, &jumlahProduk); 
+                break;
+            case 3: 
+                ubahProduk(produk, jumlahProduk); 
+                break;
+            case 4: 
+                hapusProduk(produk, &jumlahProduk); 
+                break;
+            case 5:
+                menuSorting(produk, jumlahProduk);
+                break;
+            case 6: 
+                cout << "Terima kasih telah menggunakan program!\n"; 
+                break;
+            default: 
+                cout << "Pilihan tidak valid!\n";
         }
 
-    } while (pilihan != 5);
+    } while (pilihan != 6);
 
     return 0;
 }
